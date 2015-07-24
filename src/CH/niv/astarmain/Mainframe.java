@@ -2,6 +2,8 @@ package CH.niv.astarmain;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 public class Mainframe {
@@ -21,6 +23,7 @@ public class Mainframe {
     public final Color CLOSEDLIST_COLOR = Color.blue;
     public final Color CURRENTCELL_COLOR = Color.yellow;
     public final Color PATH_COLOR = new Color(139,69,19); //Brown
+    private Main _m;
 
     public Mainframe(){
         initialize();
@@ -32,7 +35,7 @@ public class Mainframe {
         _frame = new JFrame();
         _frame.setTitle("A*-Pathfinder");
         _frame.setResizable(false);
-        _frame.setBounds(100, 100, WINDOW_WIDTH, WINDOW_HEIGHT);
+        _frame.setBounds(100, 100, WINDOW_WIDTH, WINDOW_HEIGHT + 30);
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _pane = _frame.getContentPane();
         _panel = new ColorPanel(_field);
@@ -44,9 +47,17 @@ public class Mainframe {
         update();
     }
 
+    public void resetField(Color color){
+        for(int x = 0; x < 70; x++){
+            for(int y = 0; y < 50; y++){
+                _field.setRGB(x, y, color.getRGB());
+            }
+        }
+        update();
+    }
+
     public void update(){
         _panel.repaint();
         _pane.repaint();
     }
-
 }

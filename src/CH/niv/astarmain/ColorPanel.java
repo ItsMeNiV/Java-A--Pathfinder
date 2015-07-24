@@ -14,6 +14,6 @@ public class ColorPanel extends JPanel{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(img, 0, 0, Mainframe.WINDOW_WIDTH, Mainframe.WINDOW_HEIGHT, Color.white, null);
+        g2d.drawImage(img, 0, 0, Mainframe.WINDOW_WIDTH-5, Mainframe.WINDOW_HEIGHT-15, Color.white, null);
     }
 }

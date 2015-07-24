@@ -3,6 +3,7 @@ package CH.niv.astarmain;
 import javafx.application.Application;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,9 +21,20 @@ public class Main {
     private Cell[][] _field = new Cell[ROWS][COLS];
     private Mainframe _m;
 
+    public static Main MAIN;
+
     public Main(){
         _m = new Mainframe();
         generateField();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        start();
+    }
+
+    public void start(){
         searchPath();
     }
 
@@ -62,6 +74,11 @@ public class Main {
             }
             _m.drawPixel(currentCell.getx(), currentCell.gety(), _m.CURRENTCELL_COLOR);
             _m.update();
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }while(!listContainsCell(findCellByState(cellstate.ENDINGPOINT), closedList)); //Repeat until endingcell is in closedlist
         List<String> path = new ArrayList<String>();
         Cell pathCell = findCellByState(cellstate.ENDINGPOINT);
@@ -75,14 +92,8 @@ public class Main {
             else
                 pathCell = pathCell.getParentCell();
         }while(true);
-        path.add("X: " + Integer.toString(findCellByState(cellstate.STARTINGPOINT).getx()) + "Y: " + Integer.toString(findCellByState(cellstate.STARTINGPOINT).gety()));
         _m.drawPixel(findCellByState(cellstate.STARTINGPOINT).getx(), findCellByState(cellstate.STARTINGPOINT).gety(), _m.STARTING_POINT_COLOR);
         _m.drawPixel(findCellByState(cellstate.ENDINGPOINT).getx(), findCellByState(cellstate.ENDINGPOINT).gety(), _m.ENDING_POINT_COLOR);
-        Collections.reverse(path);
-        System.out.println("The fastest Path is: ");
-        for(String s : path){
-            System.out.println(s + "\n");
-        }
     }
 
     private Cell searchForLowestF(List<Cell> celllist){
@@ -143,11 +154,6 @@ public class Main {
             for (int x = 0; x < COLS; ++x) {
                 _field[y][x].setH(calculateH(_field[y][x]));
             }
-        }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 
@@ -236,7 +242,7 @@ public class Main {
     }
 
     public static void main(String[] args){
-        new Main();
+        MAIN = new Main();
     }
 
 }
