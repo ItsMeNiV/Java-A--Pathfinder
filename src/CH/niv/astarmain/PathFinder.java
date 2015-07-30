@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Main {
+public class PathFinder {
 
     private String _file = "field.txt";
     private final int ROWS = 50;
@@ -21,20 +21,17 @@ public class Main {
     private Cell[][] _field = new Cell[ROWS][COLS];
     private Mainframe _m;
 
-    public static Main MAIN;
+    public PathFinder(Cell[][] field, Mainframe m){
+        _field = field;
+        _m = m;
+    }
 
-    public Main(){
-        _m = new Mainframe();
-        generateField();
+    public void start(){
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        start();
-    }
-
-    public void start(){
         searchPath();
     }
 
@@ -75,7 +72,7 @@ public class Main {
             _m.drawPixel(currentCell.getx(), currentCell.gety(), _m.CURRENTCELL_COLOR);
             _m.update();
             try {
-                Thread.sleep(5);
+                Thread.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -239,10 +236,6 @@ public class Main {
                 return true;
         }
         return false;
-    }
-
-    public static void main(String[] args){
-        MAIN = new Main();
     }
 
 }
