@@ -237,5 +237,6 @@ public class PathFinder implements Runnable{
     @Override
     public void run() {
         start();
+        _m.enableFieldGenerating();
     }
 }

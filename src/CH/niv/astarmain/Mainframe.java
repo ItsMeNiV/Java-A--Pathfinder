@@ -38,15 +38,24 @@ public class Mainframe {
     }
 
     private void generateField(){
+        Cell.UNIQUE_ID = 0;
         FieldGenerator fg = new FieldGenerator(COLS, ROWS);
         _genfield = fg.getField();
         drawField(_genfield);
         update();
+        _startItem.setEnabled(true);
     }
 
     private void startPathFinding(){
+        _generateFieldItem.setEnabled(false);
         PathFinder pf = new PathFinder(_genfield, this);
-        (new Thread(pf)).start();
+        Thread t = new Thread(pf);
+        t.start();
+        _startItem.setEnabled(false);
+    }
+
+    public void enableFieldGenerating(){
+        _generateFieldItem.setEnabled(true);
     }
 
     private void initialize(){
@@ -54,7 +63,7 @@ public class Mainframe {
         _frame = new JFrame();
         _frame.setTitle("A*-Pathfinder");
         _frame.setResizable(false);
-        _frame.setBounds(100, 100, WINDOW_WIDTH, WINDOW_HEIGHT + 10);
+        _frame.setBounds(100, 100, WINDOW_WIDTH, WINDOW_HEIGHT + 36);
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _pane = _frame.getContentPane();
         _panel = new ColorPanel(_field);

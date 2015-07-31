@@ -24,6 +24,7 @@ public class FieldGenerator {
         for(int y = 0; y < _height; y++){
             for(int x = 0; x < _width; x++){
                 _field[y][x] = new Cell(cellstate.UNWALKABLE, x, y);
+                System.out.println(Integer.toString(_field[y][x].getUid()));
             }
         }
         int xStart = rand.nextInt(_width);
