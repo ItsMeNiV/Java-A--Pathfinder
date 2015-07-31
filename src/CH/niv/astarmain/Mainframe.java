@@ -2,6 +2,8 @@ package CH.niv.astarmain;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 public class Mainframe {
@@ -10,6 +12,9 @@ public class Mainframe {
     private BufferedImage _field;
     private ColorPanel _panel;
     private Container _pane;
+    private JMenuBar _menuBar;
+    private JMenuItem _startItem;
+    private JMenuItem _generateFieldItem;
 
     private Cell[][] _genfield;
 
@@ -30,7 +35,6 @@ public class Mainframe {
         initialize();
         _frame.setVisible(true);
         generateField();
-        startPathFinding();
     }
 
     private void generateField(){
@@ -42,7 +46,7 @@ public class Mainframe {
 
     private void startPathFinding(){
         PathFinder pf = new PathFinder(_genfield, this);
-        pf.start();
+        (new Thread(pf)).start();
     }
 
     private void initialize(){
@@ -54,6 +58,24 @@ public class Mainframe {
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _pane = _frame.getContentPane();
         _panel = new ColorPanel(_field);
+        _menuBar = new JMenuBar();
+        _startItem = new JMenuItem("Start pathfinding");
+        _generateFieldItem = new JMenuItem("Generate field");
+        _startItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startPathFinding();
+            }
+        });
+        _generateFieldItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateField();
+            }
+        });
+        _menuBar.add(_startItem);
+        _menuBar.add(_generateFieldItem);
+        _frame.setJMenuBar(_menuBar);
         _pane.add(_panel);
     }
 
@@ -65,7 +87,7 @@ public class Mainframe {
     public void drawField(Cell[][] field){
         for(int y = 0; y < ROWS; y++){
             for(int x = 0; x < COLS; x++){
-                switch(field[y][x].getCell_state()){
+                switch(field[y][x].getCellstate()){
                     case STARTINGPOINT:
                         drawPixel(x, y, STARTING_POINT_COLOR);
                         break;

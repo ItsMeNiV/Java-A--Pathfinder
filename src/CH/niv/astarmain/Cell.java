@@ -4,7 +4,7 @@ public class Cell {
     private int F;
     private int G;
     private int H;
-    private cellstate cell_state;
+    private cellstate cellState;
     private int x;
     private int y;
     private Cell parentCell;
@@ -56,11 +56,11 @@ public class Cell {
         H = h;
     }
 
-    public cellstate getCell_state() {
-        return cell_state;
+    public cellstate getCellstate() {
+        return cellState;
     }
-    public void setCell_state(cellstate cell_state) {
-        this.cell_state = cell_state;
+    public void setCellstate(cellstate cell_state) {
+        this.cellState = cell_state;
     }
 
     public Cell getParentCell() {
@@ -70,8 +70,8 @@ public class Cell {
         this.parentCell = parentCell;
     }
 
-    public Cell(cellstate Cell_state, int x, int y){
-        setCell_state(Cell_state);
+    public Cell(cellstate cellState, int x, int y){
+        setCellstate(cellState);
         setX(x);
         setY(y);
         setUid();

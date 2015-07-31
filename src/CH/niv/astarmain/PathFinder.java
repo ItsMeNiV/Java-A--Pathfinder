@@ -1,15 +1,11 @@
 package CH.niv.astarmain;
 
-import javafx.application.Application;
-
 import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class PathFinder {
+public class PathFinder implements Runnable{
 
     private String _file = "field.txt";
     private final int ROWS = 50;
@@ -178,7 +174,7 @@ public class PathFinder {
     private Cell findCellByState(cellstate searchstate){
         for (int y = 0; y < ROWS; y++){
             for (int x = 0; x < COLS; x++) {
-                if(_field[y][x].getCell_state() == searchstate){
+                if(_field[y][x].getCellstate() == searchstate){
                     return _field[y][x];
                 }
             }
@@ -223,7 +219,7 @@ public class PathFinder {
     }
 
     private Cell findCellByCoordinates(int xcoord, int ycoord){
-        if(xcoord >= COLS || xcoord < 0 || ycoord >= ROWS || ycoord < 0 || _field[ycoord][xcoord].getCell_state() == cellstate.UNWALKABLE) {
+        if(xcoord >= COLS || xcoord < 0 || ycoord >= ROWS || ycoord < 0 || _field[ycoord][xcoord].getCellstate() == cellstate.UNWALKABLE) {
             return null;
         }else{
             return _field[ycoord][xcoord];
@@ -238,4 +234,8 @@ public class PathFinder {
         return false;
     }
 
+    @Override
+    public void run() {
+        start();
+    }
 }

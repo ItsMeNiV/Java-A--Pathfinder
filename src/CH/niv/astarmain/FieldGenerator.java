@@ -29,7 +29,7 @@ public class FieldGenerator {
         int xStart = rand.nextInt(_width);
         int yStart = rand.nextInt(_height);
         Cell currentCell = _field[yStart][xStart];
-        currentCell.setCell_state(cellstate.STARTINGPOINT);
+        currentCell.setCellstate(cellstate.STARTINGPOINT);
         Stack<Cell> stack = new Stack<Cell>();
         int visited = 1;
         while (visited < total){
@@ -59,16 +59,16 @@ public class FieldGenerator {
         int x = searchCell.getx();
         int y = searchCell.gety();
 
-        if(findCellByCoordinates(x, y-2) != null && findCellByCoordinates(x, y-2).getCell_state() == cellstate.UNWALKABLE){ //Top
+        if(findCellByCoordinates(x, y-2) != null && findCellByCoordinates(x, y-2).getCellstate() == cellstate.UNWALKABLE){ //Top
             retList.add(findCellByCoordinates(x, y-2));
         }
-        if(findCellByCoordinates(x-2, y) != null && findCellByCoordinates(x-2, y).getCell_state() == cellstate.UNWALKABLE) { //Left
+        if(findCellByCoordinates(x-2, y) != null && findCellByCoordinates(x-2, y).getCellstate() == cellstate.UNWALKABLE) { //Left
             retList.add(findCellByCoordinates(x-2, y));
         }
-        if(findCellByCoordinates(x+2, y) != null && findCellByCoordinates(x+2, y).getCell_state() == cellstate.UNWALKABLE) { //Right
+        if(findCellByCoordinates(x+2, y) != null && findCellByCoordinates(x+2, y).getCellstate() == cellstate.UNWALKABLE) { //Right
             retList.add(findCellByCoordinates(x+2, y));
         }
-        if(findCellByCoordinates(x, y+2) != null && findCellByCoordinates(x, y+2).getCell_state() == cellstate.UNWALKABLE) { //Bottom
+        if(findCellByCoordinates(x, y+2) != null && findCellByCoordinates(x, y+2).getCellstate() == cellstate.UNWALKABLE) { //Bottom
             retList.add(findCellByCoordinates(x, y+2));
         }
 
@@ -84,8 +84,8 @@ public class FieldGenerator {
         do{
             genx = rand.nextInt(_width);
             geny = rand.nextInt(_height);
-        }while((startx == genx && geny == starty) || _field[geny][genx].getCell_state() == cellstate.UNWALKABLE);
-        _field[geny][genx].setCell_state(cellstate.ENDINGPOINT);
+        }while((startx == genx && geny == starty) || _field[geny][genx].getCellstate() == cellstate.UNWALKABLE);
+        _field[geny][genx].setCellstate(cellstate.ENDINGPOINT);
     }
 
     private Cell findCellByCoordinates(int xcoord, int ycoord){
@@ -99,7 +99,7 @@ public class FieldGenerator {
     private Cell findCellByState(cellstate searchstate){
         for (int y = 0; y < _height; y++){
             for (int x = 0; x < _width; x++) {
-                if(_field[y][x].getCell_state() == searchstate){
+                if(_field[y][x].getCellstate() == searchstate){
                     return _field[y][x];
                 }
             }
@@ -108,11 +108,11 @@ public class FieldGenerator {
     }
 
     private void clearWallBetween(Cell cell1, Cell cell2){
-        if(cell2.getCell_state() != cellstate.STARTINGPOINT || cell2.getCell_state() != cellstate.ENDINGPOINT)
-            cell2.setCell_state(cellstate.WALKABLE);
+        if(cell2.getCellstate() != cellstate.STARTINGPOINT || cell2.getCellstate() != cellstate.ENDINGPOINT)
+            cell2.setCellstate(cellstate.WALKABLE);
         int x = ((cell1.getx() + cell2.getx()) / 2);
         int y = ((cell1.gety() + cell2.gety()) / 2);
-        _field[y][x].setCell_state(cellstate.WALKABLE);
+        _field[y][x].setCellstate(cellstate.WALKABLE);
     }
 
 }
