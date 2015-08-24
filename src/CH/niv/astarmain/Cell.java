@@ -1,73 +1,73 @@
 package CH.niv.astarmain;
 
 public class Cell {
-    private int F;
-    private int G;
-    private int H;
-    private cellstate cellState;
-    private int x;
-    private int y;
-    private Cell parentCell;
-    private int uid;
+    private int _F;
+    private int _G;
+    private int _H;
+    private cellstate _cellState;
+    private int _x;
+    private int _y;
+    private Cell _parentCell;
+    private int _uid;
 
     static int UNIQUE_ID = 0;
 
     private void setUid(){
         UNIQUE_ID++;
-        uid = UNIQUE_ID;
+        _uid = UNIQUE_ID;
     }
     public int getUid(){
-        return uid;
+        return _uid;
     }
 
     public int getx() {
-        return x;
+        return _x;
     }
     public void setX(int X) {
-        x = X;
+        _x = X;
     }
 
     public int gety() {
-        return y;
+        return _y;
     }
     public void setY(int Y) {
-        y = Y;
+        _y = Y;
     }
 
     public int getF() {
         calculateF();
-        return F;
+        return _F;
     }
     private void setF(int f) {
-        F = f;
+        _F = f;
     }
 
     public int getG() {
-        return G;
+        return _G;
     }
     public void setG(int g) {
-        G = g;
+        _G = g;
     }
 
     public int getH() {
-        return H;
+        return _H;
     }
     public void setH(int h) {
-        H = h;
+        _H = h;
     }
 
     public cellstate getCellstate() {
-        return cellState;
+        return _cellState;
     }
     public void setCellstate(cellstate cell_state) {
-        this.cellState = cell_state;
+        this._cellState = cell_state;
     }
 
     public Cell getParentCell() {
-        return parentCell;
+        return _parentCell;
     }
     public void setParentCell(Cell parentCell) {
-        this.parentCell = parentCell;
+        this._parentCell = parentCell;
     }
 
     public Cell(cellstate cellState, int x, int y){
