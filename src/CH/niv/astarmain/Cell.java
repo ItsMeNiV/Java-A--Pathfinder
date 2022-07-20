@@ -1,83 +1,91 @@
 package CH.niv.astarmain;
 
 public class Cell {
-    private int _F;
-    private int _G;
-    private int _H;
-    private cellstate _cellState;
-    private int _x;
-    private int _y;
-    private Cell _parentCell;
-    private int _uid;
+	private int f;
+	private int g;
+	private int h;
+	private Celltype cellType;
+	private int x;
+	private int y;
+	private Cell parentCell;
+	private int uid;
 
-    static int UNIQUE_ID = 0;
+	static int uniqueId = 0;
 
-    private void setUid(){
-        UNIQUE_ID++;
-        _uid = UNIQUE_ID;
-    }
-    public int getUid(){
-        return _uid;
-    }
+	private void setUid() {
+		Cell.uniqueId++;
+		this.uid = Cell.uniqueId;
+	}
 
-    public int getx() {
-        return _x;
-    }
-    public void setX(int X) {
-        _x = X;
-    }
+	public int getUid() {
+		return this.uid;
+	}
 
-    public int gety() {
-        return _y;
-    }
-    public void setY(int Y) {
-        _y = Y;
-    }
+	public int getx() {
+		return this.x;
+	}
 
-    public int getF() {
-        calculateF();
-        return _F;
-    }
-    private void setF(int f) {
-        _F = f;
-    }
+	public void setX(int X) {
+		this.x = X;
+	}
 
-    public int getG() {
-        return _G;
-    }
-    public void setG(int g) {
-        _G = g;
-    }
+	public int gety() {
+		return this.y;
+	}
 
-    public int getH() {
-        return _H;
-    }
-    public void setH(int h) {
-        _H = h;
-    }
+	public void setY(int Y) {
+		this.y = Y;
+	}
 
-    public cellstate getCellstate() {
-        return _cellState;
-    }
-    public void setCellstate(cellstate cell_state) {
-        this._cellState = cell_state;
-    }
+	public int getF() {
+		calculateF();
+		return this.f;
+	}
 
-    public Cell getParentCell() {
-        return _parentCell;
-    }
-    public void setParentCell(Cell parentCell) {
-        this._parentCell = parentCell;
-    }
+	private void setF(int f) {
+		this.f = f;
+	}
 
-    public Cell(cellstate cellState, int x, int y){
-        setCellstate(cellState);
-        setX(x);
-        setY(y);
-        setUid();
-    }
+	public int getG() {
+		return this.g;
+	}
 
-    public void calculateF(){
-        setF(getH() + getG());
-    }
+	public void setG(int g) {
+		this.g = g;
+	}
+
+	public int getH() {
+		return this.h;
+	}
+
+	public void setH(int h) {
+		this.h = h;
+	}
+
+	public Celltype getCelltype() {
+		return this.cellType;
+	}
+
+	public void setCellType(Celltype cellType) {
+		this.cellType = cellType;
+	}
+
+	public Cell getParentCell() {
+		return this.parentCell;
+	}
+
+	public void setParentCell(Cell parentCell) {
+		this.parentCell = parentCell;
+	}
+
+	public Cell(Celltype cellType, int x, int y) {
+		setCellType(cellType);
+		setX(x);
+		setY(y);
+		setUid();
+	}
+
+	public void calculateF() {
+		setF(getH() + getG());
+	}
 }

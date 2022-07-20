@@ -1,134 +1,138 @@
 package CH.niv.astarmain;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.WindowConstants;
 
 public class Mainframe {
 
-    private JFrame _frame;
-    private BufferedImage _field;
-    private ColorPanel _panel;
-    private Container _pane;
-    private JMenuBar _menuBar;
-    private JMenuItem _startItem;
-    private JMenuItem _generateFieldItem;
+	private static final int WINDOW_WIDTH = 750;
+	private static final int WINDOW_HEIGHT = 650;
+	private static final int ROWS = 50;
+	private static final int COLS = 70;
+	private static final Color STARTING_POINT_COLOR = Color.green;
+	private static final Color ENDING_POINT_COLOR = Color.red;
+	private static final Color DEFAULT_COLOR = Color.gray;
+	private static final Color UNWALKABLE_COLOR = Color.black;
 
-    private Cell[][] _genfield;
+	private JFrame frame;
+	private BufferedImage field;
+	private ColorPanel panel;
+	private Container pane;
+	private JMenuItem startItem;
+	private JMenuItem generateFieldItem;
+	private Cell[][] genfield;
 
-    public static int WINDOW_WIDTH = 700;
-    public static int WINDOW_HEIGHT = 600;
-    private final int ROWS = 50;
-    private final int COLS = 70;
-    public final Color STARTING_POINT_COLOR = Color.green;
-    public final Color ENDING_POINT_COLOR = Color.red;
-    public final Color DEFAULT_COLOR = Color.gray;
-    public final Color UNWALKABLE_COLOR = Color.black;
-    public final Color OPENLIST_COLOR = Color.cyan;
-    public final Color CLOSEDLIST_COLOR = Color.blue;
-    public final Color CURRENTCELL_COLOR = Color.yellow;
-    public final Color PATH_COLOR = new Color(139,69,19); //Brown
+	public Mainframe() {
+		initialize();
+		generateField();
+	}
 
-    public Mainframe(){
-        initialize();
-        _frame.setVisible(true);
-        generateField();
-    }
+	public void displayFrame() {
+		frame.setVisible(true);
+	}
 
-    private void generateField(){
-        Cell.UNIQUE_ID = 0;
-        FieldGenerator fg = new FieldGenerator(COLS, ROWS);
-        _genfield = fg.getField();
-        drawField(_genfield);
-        update();
-        _startItem.setEnabled(true);
-    }
+	private void generateField() {
+		Cell.uniqueId = 0;
+		FieldGenerator fg = new FieldGenerator(COLS, ROWS);
+		genfield = fg.getField();
+		drawField(genfield);
+		update();
+		startItem.setEnabled(true);
+	}
 
-    private void startPathFinding(){
-        _generateFieldItem.setEnabled(false);
-        PathFinder pf = new PathFinder(_genfield, this);
-        Thread t = new Thread(pf);
-        t.start();
-        _startItem.setEnabled(false);
-    }
+	private void startPathFinding() {
+		generateFieldItem.setEnabled(false);
+		PathFinder pf = new PathFinder(genfield, this);
+		Thread t = new Thread(pf);
+		t.start();
+		startItem.setEnabled(false);
+	}
 
-    public void enableFieldGenerating(){
-        _generateFieldItem.setEnabled(true);
-    }
+	public void enableFieldGenerating() {
+		generateFieldItem.setEnabled(true);
+	}
 
-    private void initialize(){
-        _field = new BufferedImage(70, 50, BufferedImage.TYPE_INT_RGB);
-        _frame = new JFrame();
-        _frame.setTitle("A*-Pathfinder");
-        _frame.setResizable(false);
-        _frame.setBounds(100, 100, WINDOW_WIDTH, WINDOW_HEIGHT + 36);
-        _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        _pane = _frame.getContentPane();
-        _panel = new ColorPanel(_field);
-        _menuBar = new JMenuBar();
-        _startItem = new JMenuItem("Start pathfinding");
-        _generateFieldItem = new JMenuItem("Generate field");
-        _startItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startPathFinding();
-            }
-        });
-        _generateFieldItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                generateField();
-            }
-        });
-        _menuBar.add(_startItem);
-        _menuBar.add(_generateFieldItem);
-        _frame.setJMenuBar(_menuBar);
-        _pane.add(_panel);
-    }
+	private void initialize() {
+		JMenuBar menuBar = new JMenuBar();
+		field = new BufferedImage(70, 50, BufferedImage.TYPE_INT_RGB);
+		frame = new JFrame();
+		pane = frame.getContentPane();
+		panel = new ColorPanel(field, WINDOW_WIDTH, WINDOW_HEIGHT);
+		startItem = new JMenuItem("Start pathfinding");
+		generateFieldItem = new JMenuItem("Generate field");
 
-    public void drawPixel(int x, int y, Color color){
-        _field.setRGB(x, y, color.getRGB());
-        update();
-    }
+		frame.setTitle("A*-Pathfinder");
+		frame.setResizable(false);
+		frame.setBounds(100, 100, WINDOW_WIDTH, WINDOW_HEIGHT + 36);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-    public void drawField(Cell[][] field){
-        for(int y = 0; y < ROWS; y++){
-            for(int x = 0; x < COLS; x++){
-                switch(field[y][x].getCellstate()){
-                    case STARTINGPOINT:
-                        drawPixel(x, y, STARTING_POINT_COLOR);
-                        break;
-                    case ENDINGPOINT:
-                        drawPixel(x, y, ENDING_POINT_COLOR);
-                        break;
-                    case WALKABLE:
-                        drawPixel(x, y, DEFAULT_COLOR);
-                        break;
-                    case UNWALKABLE:
-                        drawPixel(x, y, UNWALKABLE_COLOR);
-                        break;
-                }
-            }
-        }
-    }
+		startItem.addActionListener((ActionEvent e) -> startPathFinding());
+		generateFieldItem.addActionListener((ActionEvent e) -> generateField());
 
-    public void resetField(Color color){
-        for(int x = 0; x < 70; x++){
-            for(int y = 0; y < 50; y++){
-                _field.setRGB(x, y, color.getRGB());
-            }
-        }
-        update();
-    }
+		menuBar.add(startItem);
+		menuBar.add(generateFieldItem);
+		frame.setJMenuBar(menuBar);
 
-    public void update(){
-        _panel.repaint();
-        _pane.repaint();
-    }
+		pane.add(panel);
+	}
 
-    public static void main(String[] args){
-        new Mainframe();
-    }
+	public void drawPixel(int x, int y, Color color) {
+		field.setRGB(x, y, color.getRGB());
+		update();
+	}
+
+	public void drawPixel(int x, int y, Celltype cellType) {
+		field.setRGB(x, y, getCellTypeColor(cellType).getRGB());
+		update();
+	}
+
+	public void drawField(Cell[][] field) {
+		for (int y = 0; y < ROWS; y++) {
+			for (int x = 0; x < COLS; x++) {
+				drawPixel(x, y, field[y][x].getCelltype());
+			}
+		}
+	}
+
+	public void resetField(Color color) {
+		for (int x = 0; x < 70; x++) {
+			for (int y = 0; y < 50; y++) {
+				field.setRGB(x, y, color.getRGB());
+			}
+		}
+		update();
+	}
+
+	public void update() {
+		panel.repaint();
+		pane.repaint();
+	}
+
+	private Color getCellTypeColor(Celltype cellType) {
+		Color returnColor;
+		switch (cellType) {
+		case UNWALKABLE:
+			returnColor = UNWALKABLE_COLOR;
+			break;
+		case STARTINGPOINT:
+			returnColor = STARTING_POINT_COLOR;
+			break;
+		case ENDINGPOINT:
+			returnColor = ENDING_POINT_COLOR;
+			break;
+		case WALKABLE:
+		default:
+			returnColor = DEFAULT_COLOR;
+			break;
+		}
+		return returnColor;
+	}
+
 }
